@@ -1,0 +1,7 @@
+author: Rozipp
+database: false
+description: Example Plugin
+main: ua.rozipp.example.main.ExamplePlugin
+name: ExamplePlugin
+startup: postworld
+version: '0.0.1beta'

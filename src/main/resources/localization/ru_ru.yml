@@ -1,0 +1,33 @@
+welcome_string: "Добро пожаловать на Furnex [%0] [%1]"
+
+civ_currencyName: "Монет"
+MobSpawner_Heading: "Спавнер мобов"
+
+#---- Generic Internal Plugin Error Messages ----
+internalException: "Ошибка конфигурации файла"
+internalIOException: "Ошибка чтения файла"
+internalCommandException: "Ошибка при выполнении этого действия. Сообщите администратору: vk.com/muffincolor, сообща этот код ошибки: [%0]"
+internalDatabaseException: "Ошибка сохранения данных города/цивилизации и прочего. Попытайтесь использовать другое имя или свяжитесь с https://vk.com/muffincolor"
+FileNotFound: "Файл не найден:"
+stringFormattingError: "Ошибка строк(и), свяжитесь с адмистратором vk.com/muffincolor"
+
+#----Generic Building Messaging----
+cannotBuild_chestInWay: "Нельзя строить здесь, мешают сундуки."
+cannotBuild_needPermissions: "Нельзя строить здесь, вам нужны права в этом/этим чанке/чанках."
+cannotBuild_protectedInWay: "Нельзя строить здесь, есть защищенные блоки."
+cannotBuild_structureInWay: "Нелья строить здесь, есть блоки строений по пути."
+cannotBuild_structureHere: "Нельзя строить здесь, уже есть постройки."
+cannotBuild_farmInWay: "Нельзя строить здесь, мешает ферма."
+cannotBuild_wallInWay: "Нельзя строить здесь, мешает стена."
+cannotBuild_campinWay: "Нельзя строить здесь, мешает лагерь."
+cannotBuild_toofarUnderground: "Нельзя строить здесь, вы должны быть ближе к поверхности."
+cannotBuild_outsideBorder: "Нельзя строить здесь. Часть постройки выходит за границы мира."
+cannotBuild_regionInWay: "Нельзя строить здесь, мешает регион."
+
+requiredToPurchase: "купить это обновление."
+
+TradeGoodSign_Heading: "Торговый пост"
+
+Finished: "Закончено."
+Repaired: "Починено."
+NoStructureAt: "Нет структуры в "
