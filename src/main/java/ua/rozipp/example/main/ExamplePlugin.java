@@ -6,10 +6,10 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.InvalidConfigurationException;
 import ua.rozipp.abstractplugin.command.CommanderRegistration;
 import ua.rozipp.abstractplugin.command.CustomCommand;
-import ua.rozipp.example.command.TestCommand;
 import ua.rozipp.abstractplugin.main.AColor;
 import ua.rozipp.abstractplugin.main.AException;
 import ua.rozipp.abstractplugin.main.APlugin;
+import ua.rozipp.example.command.TestCommand;
 import ua.rozipp.example.listener.DisableXPListener;
 import ua.rozipp.example.listener.MainListener;
 import ua.rozipp.example.remotesession.RemoteSession;
@@ -52,7 +52,7 @@ public class ExamplePlugin extends APlugin {
 		registerAllListeners();
 
 		//setup session array
-		TickHandler.sessions = new ArrayList<RemoteSession>();
+		TickHandler.sessions = new ArrayList<>();
 		//setup the schedule to called the tick handler
 		getTaskMaster().syncTimer(TickHandler.class.getName(), new TickHandler(), 1);
 	}
@@ -75,11 +75,6 @@ public class ExamplePlugin extends APlugin {
 
 	public void registerAllListeners() {
 		registerListener(new MainListener());
-//		Listeners.registerAll(new BlockListener());
-//		Listeners.registerAll(new ChatListener());
-//		Listeners.registerAll(new CustomItemListener());
-//		Listeners.registerAll(new PlayerListener());
-//		Listeners.registerAll(new CraftableCustomMaterialListener());
 
 		if (getSetting().getBooleanOrDefault("civ", "global.use_exp_as_currency", false))
 			registerListener(new DisableXPListener());
@@ -89,7 +84,6 @@ public class ExamplePlugin extends APlugin {
 
 	public void initCommands() {
 		// Init commands
-
 		CommanderRegistration.register(new TestCommand("test"));
 		CommanderRegistration.register(new CustomCommand("kill").withExecutor(new CustomCommand.CustomExecutor() {
 			@Override

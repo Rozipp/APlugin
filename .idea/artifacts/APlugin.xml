@@ -1,6 +1,8 @@
 <component name="ArtifactManager">
   <artifact type="jar" build-on-make="true" name="APlugin">
-    <output-path>$PROJECT_DIR$/out/artifacts/APlugin</output-path>
-    <root id="archive" name="APlugin.jar" />
+    <output-path>$USER_HOME$/TLaucher/MinecraftExemple/plugins</output-path>
+    <root id="archive" name="APlugin.jar">
+      <element id="module-output" name="APlugin" />
+    </root>
   </artifact>
 </component>

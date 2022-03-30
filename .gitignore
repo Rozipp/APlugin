@@ -56,22 +56,6 @@ tmp/
 
 # Editor detritus
 *.vim
-*.swp
 tags
 .vscode
 /.pydevproject
-/.idea/
-/.idea/
-/.idea/artifacts/
-/.idea/artifacts/APlugin.xml
-/.idea/codeStyles/
-/.idea/libraries/
-/.idea/.gitignore
-/.idea/APlugin.iml
-/.idea/codeStyleSettings.xml
-/.idea/compiler.xml
-/.idea/jarRepositories.xml
-/.idea/misc.xml
-/.idea/modules.xml
-/.idea/vcs.xml
-/.idea/workspace.xml
