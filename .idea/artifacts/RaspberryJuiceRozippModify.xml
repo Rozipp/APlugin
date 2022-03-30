@@ -1,8 +1,0 @@
-<component name="ArtifactManager">
-  <artifact type="jar" build-on-make="true" name="RaspberryJuiceRozippModify">
-    <output-path>$USER_HOME$/TLaucher/MinecraftPython/server/plugins</output-path>
-    <root id="archive" name="RaspberryJuiceRozippModify.jar">
-      <element id="module-output" name="raspberryjuice" />
-    </root>
-  </artifact>
-</component>
