@@ -18,7 +18,7 @@ import ua.rozipp.example.remotesession.TickHandler;
 import java.util.EnumSet;
 import java.util.Set;
 
-public class MainListener implements Listener {
+public class ExampleListener implements Listener {
 
 	@EventHandler
 	public void PlayerJoin(PlayerJoinEvent event) {

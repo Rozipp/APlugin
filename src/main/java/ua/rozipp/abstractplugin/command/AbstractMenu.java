@@ -2,8 +2,10 @@ package ua.rozipp.abstractplugin.command;
 
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
+import ua.rozipp.abstractplugin.AColor;
 import ua.rozipp.abstractplugin.command.taber.AbstractCashedTaber;
-import ua.rozipp.abstractplugin.main.*;
+import ua.rozipp.abstractplugin.exception.AException;
+import ua.rozipp.abstractplugin.exception.InvalidPermissionException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,7 +37,7 @@ public abstract class AbstractMenu extends CustomCommand {
 
 	public void showBasicHelp(CommandSender sender) {
 		getMessenger().sendHeading(sender, displayName + " " + getLocalize().getString(sender, "cmd_CommandHelpTitle"));
-		getMessenger().sendMessageString(sender, AColor.LightPurple + "Help " + AColor.BOLD + AColor.Green + getString_cmd());
+		getMessenger().sendMessageString(sender, AColor.LightPurple + "Help " + AColor.BOLD + AColor.Green + getCommandString());
 
 		// GuiInventory gi = new GuiInventory(player, null);
 		// gi.setTitle(this.perentCommand);
@@ -43,7 +45,7 @@ public abstract class AbstractMenu extends CustomCommand {
 			CustomCommand aCommand = subCommands.get(i);
 			try {
 				aCommand.valid(sender);
-			} catch (CustomCommandValidException e) {
+			} catch (InvalidPermissionException e) {
 				continue;
 			}
 
@@ -54,7 +56,7 @@ public abstract class AbstractMenu extends CustomCommand {
 				altComms = altComms + " (" + s + ")";
 			// Integer index = aCommand.getDescription().lastIndexOf("]") + 1;
 			// String title = RJMColor.LightPurple + aCommand.getString_cmd() + altComms + aCommand.getDescription().substring(0, index);
-			String title = AColor.LightPurple + aCommand.getString_cmd() + altComms;
+			String title = AColor.LightPurple + aCommand.getCommandString() + altComms;
 			String coment = AColor.LightGray + (aCommand.getDescription() != null ? aCommand.getDescription().trim() : "null");
 			// String coment = RJMColor.LightGray + aCommand.getDescription().substring(index);
 			coment = coment.replace("[", AColor.Yellow + "[");
@@ -92,7 +94,7 @@ public abstract class AbstractMenu extends CustomCommand {
 		} catch (Exception e) {}
 
 		for (CustomCommand cc : this.getSubCommands()) {
-			if (cc.getString_cmd().equalsIgnoreCase(arg)) {
+			if (cc.getCommandString().equalsIgnoreCase(arg)) {
 				return cc.onTab(sender, cmd, label + " " + arg, newargs);
 			}
 			if (cc.getAliases() != null) {
@@ -131,17 +133,17 @@ public abstract class AbstractMenu extends CustomCommand {
 				Integer index = Integer.parseInt(newcomm);
 				if (index < 0 || index >= subCommands.size()) throw new AException("Недопустимый индекс команды");
 				CustomCommand cc = subCommands.get(index);
-				cc.onCommand(sender, cmd, label + " " + cc.getString_cmd(), newargs);
+				cc.onCommand(sender, cmd, label + " " + cc.getCommandString(), newargs);
 				return;
 			} catch (NumberFormatException e) {}
 
 			for (CustomCommand cc : perent.getSubCommands()) {
-				if (cc.getString_cmd().equalsIgnoreCase(newcomm)) {
-					cc.onCommand(sender, cmd, label + " " + cc.getString_cmd(), newargs);
+				if (cc.getCommandString().equalsIgnoreCase(newcomm)) {
+					cc.onCommand(sender, cmd, label + " " + cc.getCommandString(), newargs);
 					return;
 				}
 				if (cc.getAliases() != null && cc.getAliases().contains(newcomm.toLowerCase())) {
-					cc.onCommand(sender, cmd, label + " " + cc.getString_cmd(), newargs);
+					cc.onCommand(sender, cmd, label + " " + cc.getCommandString(), newargs);
 					return;
 				}
 			}
@@ -161,7 +163,7 @@ public abstract class AbstractMenu extends CustomCommand {
 		protected List<String> newTabList(String arg) {
 			List<String> tabList = new ArrayList<>();
 			for (CustomCommand s : perent.getSubCommands()) {
-				if (s.getString_cmd().startsWith(arg)) tabList.add(s.getString_cmd());
+				if (s.getCommandString().startsWith(arg)) tabList.add(s.getCommandString());
 				// else {
 				// if (s.getAliases() != null) {
 				// for (String al : s.getAliases())

@@ -1,10 +1,12 @@
 package ua.rozipp.abstractplugin.command;
 
 import lombok.Getter;
-import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import ua.rozipp.abstractplugin.main.*;
+import ua.rozipp.abstractplugin.ALocalizerMaster;
+import ua.rozipp.abstractplugin.AMessenger;
+import ua.rozipp.abstractplugin.APlugin;
+import ua.rozipp.abstractplugin.exception.AException;
 
 import java.util.HashMap;
 
@@ -25,7 +27,7 @@ public class ACommander {
 	@Getter
 	private APlugin plugin;
 	@Getter
-	private ALocalize localize;
+	private ALocalizerMaster localize;
 	@Getter
 	private AMessenger messenger;
 
@@ -35,7 +37,6 @@ public class ACommander {
 	}
 
 	// ----------------- arg utils
-
 	public String convertCommand(String comm) {
 		String rus = "фисвуапршолдьтщзйкыегмцчня";
 		String eng = "abcdefghijklmnopqrstuvwxyz";
@@ -75,26 +76,26 @@ public class ACommander {
 
 	public Player getPlayer(CommandSender sender) throws AException {
 		if (sender instanceof Player) return (Player) sender;
-		throw new AException(APlugin.getPlugin().getLocalize().getString(sender, "cmd_MustBePlayer"));
+		throw new AException(APlugin.getPlugin().getLocalizer().getString(sender, "cmd_MustBePlayer"));
 	}
 
 	// --------------------- get args
 
 	public Integer getNamedInteger(String[] args, int index) throws AException {
-		if (args.length < (index + 1)) throw new AException(APlugin.getPlugin().getLocalize().getString("", "cmd_enterNumber"));
+		if (args.length < (index + 1)) throw new AException(APlugin.getPlugin().getLocalizer().getString("", "cmd_enterNumber"));
 		try {
 			return Integer.valueOf(args[index]);
 		} catch (NumberFormatException e) {
-			throw new AException(args[index] + " " + APlugin.getPlugin().getLocalize().getString("", "cmd_enterNumerError2"));
+			throw new AException(args[index] + " " + APlugin.getPlugin().getLocalizer().getString("", "cmd_enterNumerError2"));
 		}
 	}
 
 	public Double getNamedDouble(String[] args, int index) throws AException {
-		if (args.length < (index + 1)) throw new AException(APlugin.getPlugin().getLocalize().getString("", "cmd_enterNumber"));
+		if (args.length < (index + 1)) throw new AException(APlugin.getPlugin().getLocalizer().getString("", "cmd_enterNumber"));
 		try {
 			return Double.valueOf(args[index]);
 		} catch (NumberFormatException e) {
-			throw new AException(args[index] + " " + APlugin.getPlugin().getLocalize().getString("", "cmd_enterNumerError"));
+			throw new AException(args[index] + " " + APlugin.getPlugin().getLocalizer().getString("", "cmd_enterNumerError"));
 		}
 	}
 

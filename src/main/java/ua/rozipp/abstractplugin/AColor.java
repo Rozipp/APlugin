@@ -1,4 +1,4 @@
-package ua.rozipp.abstractplugin.main;
+package ua.rozipp.abstractplugin;
 
 import org.bukkit.ChatColor;
 

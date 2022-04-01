@@ -1,6 +1,6 @@
 package ua.rozipp.example.remotesession;
 
-import ua.rozipp.example.main.Static;
+import ua.rozipp.example.main.ExampleStatic;
 
 import java.util.Iterator;
 import java.util.List;
@@ -27,7 +27,7 @@ public class TickHandler implements Runnable {
 			try {
 				session.close();
 			} catch (Exception e) {
-				Static.getLogger().warning("Failed to close RemoteSession");
+				ExampleStatic.getLogger().warning("Failed to close RemoteSession");
 				e.printStackTrace();
 			}
 		}

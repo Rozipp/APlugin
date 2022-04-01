@@ -19,7 +19,7 @@ public class CommanderRegistration {
 
 	public static void register(CustomCommand custonCommand) {
 		ReflectCommand command;
-		if (custonCommand.getString_cmd() != null && !custonCommand.getString_cmd().isEmpty())
+		if (custonCommand.getCommandString() != null && !custonCommand.getCommandString().isEmpty())
 			command = new ReflectCommand(custonCommand);
 		else
 			throw new CommandNotPreparedException("Command does not have a name.");
@@ -50,7 +50,7 @@ public class CommanderRegistration {
 		private CustomCommand custonCommand;
 
 		protected ReflectCommand(CustomCommand custonCommand) {
-			super(custonCommand.getString_cmd());
+			super(custonCommand.getCommandString());
 			this.custonCommand = custonCommand;
 			if (custonCommand.getAliases() != null) this.setAliases(custonCommand.getAliases());
 			if (custonCommand.getDescription() != null) this.setDescription(custonCommand.getDescription());

@@ -1,52 +1,57 @@
 package ua.rozipp.abstractplugin.command;
 
-import ua.rozipp.abstractplugin.command.taber.AbstractTaber;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
-import ua.rozipp.abstractplugin.main.AException;
-import ua.rozipp.abstractplugin.main.ALocalize;
-import ua.rozipp.abstractplugin.main.AMessenger;
-import ua.rozipp.abstractplugin.main.APlugin;
+import ua.rozipp.abstractplugin.command.taber.AbstractTaber;
+import ua.rozipp.abstractplugin.exception.AException;
+import ua.rozipp.abstractplugin.exception.InvalidPermissionException;
+import ua.rozipp.abstractplugin.ALocalizerMaster;
+import ua.rozipp.abstractplugin.AMessenger;
+import ua.rozipp.abstractplugin.APlugin;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-
 /**
  * <p>
  * Общий клас для команд. После создания команды,добавление параметров возможно как через сеттеры (set...()), так через билдеры (with..())
  * </p>
- * executor    - вызываться при выполнении команды. Обязательный параметр.
- * description - хранит описание, для вывода в help-е подменю - List<String> aliases - Вариванты альтернативных команд
- * validator   - Проверка команды на доступность для CommandSender. Обрабатываються в порядке добавления;
- * tabs         - Класы дополнения клавишей Tab. Обрабатываються в порядке добавления
- * @author rozipp */
-@Setter
+ *
+ * @author rozipp
+ */
 @Getter
 public class CustomCommand {
 
-	private APlugin plugin;
-	private ALocalize localize;
-	private AMessenger messenger;
+	private final APlugin plugin;
+	private final ALocalizerMaster localize;
+	private final AMessenger messenger;
+	private final String commandString;
 
-	private String string_cmd;
+	@Setter
 	private String description;
+	@Setter
 	private List<String> aliases = null;
+	@Setter
 	private String usage = null;
+	@Setter
 	private String permission = null;
+	@Setter
 	private String permissionMessage = null;
+	@Setter
 	private List<AbstractValidator> validators = new ArrayList<>();
+	@Setter
 	private CustomExecutor executor = null;
+	@Setter
 	private List<AbstractTaber> tabs = new ArrayList<>();
 
-	public CustomCommand(String string_cmd) {
-		this.string_cmd = string_cmd;
+	public CustomCommand(String commandString) {
+		this.commandString = commandString;
 		this.plugin = APlugin.getPlugin();
-		this.localize = plugin.getLocalize();
+		this.localize = plugin.getLocalizer();
 		this.messenger = plugin.getMessenger();
 	}
 
@@ -102,7 +107,7 @@ public class CustomCommand {
 		this.aliases = Arrays.asList(aliases);
 	}
 
-	public void valid(CommandSender sender) throws CustomCommandValidException {
+	public void valid(CommandSender sender) throws InvalidPermissionException {
 		if (validators == null) return;
 		for (AbstractValidator v : validators)
 			v.isValid(sender);
@@ -114,7 +119,7 @@ public class CustomCommand {
 			valid(sender);
 			executor.run(sender, cmd, label, args);
 			return true;
-		} catch (AException | CustomCommandValidException e) {
+		} catch (AException | InvalidPermissionException e) {
 			getMessenger().sendErrorString(sender, e.getMessage());
 			return false;
 		}
@@ -133,8 +138,6 @@ public class CustomCommand {
 		return new ArrayList<>();
 	}
 
-	public interface CustomExecutor {
-		void run(CommandSender sender, Command cmd, String label, String[] args) throws AException;
-	}
+
 
 }

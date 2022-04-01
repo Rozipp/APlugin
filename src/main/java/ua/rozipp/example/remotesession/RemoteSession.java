@@ -14,7 +14,7 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.util.Vector;
 import ua.rozipp.example.config.LocationType;
 import ua.rozipp.example.main.ExampleData;
-import ua.rozipp.example.main.Static;
+import ua.rozipp.example.main.ExampleStatic;
 
 import java.io.*;
 import java.net.Socket;
@@ -71,7 +71,7 @@ public class RemoteSession {
 		this.in = new BufferedReader(new InputStreamReader(socket.getInputStream(), "UTF-8"));
 		this.out = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream(), "UTF-8"));
 		startThreads();
-		Static.getLogger().info("Opened connection to" + socket.getRemoteSocketAddress() + ".");
+		ExampleStatic.getLogger().info("Opened connection to" + socket.getRemoteSocketAddress() + ".");
 	}
 
 	protected void startThreads() {
@@ -120,10 +120,10 @@ public class RemoteSession {
 		if (origin == null) {
 			switch (locationType) {
 				case ABSOLUTE:
-					this.origin = new Location(Static.getServer().getWorlds().get(0), 0, 0, 0);
+					this.origin = new Location(ExampleStatic.getServer().getWorlds().get(0), 0, 0, 0);
 					break;
 				case RELATIVE:
-					this.origin = Static.getServer().getWorlds().get(0).getSpawnLocation();
+					this.origin = ExampleStatic.getServer().getWorlds().get(0).getSpawnLocation();
 					break;
 				default:
 					throw new IllegalArgumentException("Unknown location type " + locationType);
@@ -135,7 +135,7 @@ public class RemoteSession {
 			handleLine(message);
 			processedCount++;
 			if (processedCount >= maxCommandsPerTick) {
-				Static.getLogger().warning("Over " + maxCommandsPerTick +
+				ExampleStatic.getLogger().warning("Over " + maxCommandsPerTick +
 					" commands were queued - deferring " + inQueue.size() + " to next tick");
 				break;
 			}
@@ -159,7 +159,7 @@ public class RemoteSession {
 		
 		try {
 			// get the server
-			Server server = Static.getServer();
+			Server server = ExampleStatic.getServer();
 			
 			// get the world
 			World world = origin.getWorld();
@@ -210,19 +210,19 @@ public class RemoteSession {
 				
 			// world.getPlayerId
 			} else if (c.equals("world.getPlayerId")) {
-				Player p = Static.getNamedPlayer(args[0]);
+				Player p = ExampleStatic.getNamedPlayer(args[0]);
 				if (p != null) {
 					send(p.getEntityId());
 				} else {
-					Static.getLogger().info("Player [" + args[0] + "] not found.");
+					ExampleStatic.getLogger().info("Player [" + args[0] + "] not found.");
 					send("Fail");
 				}
 				
 			// entity.getListName
 			} else if (c.equals("entity.getName")) {
-				Entity e = Static.getEntity(Integer.parseInt(args[0]));
+				Entity e = ExampleStatic.getEntity(Integer.parseInt(args[0]));
 				if (e == null) {
-					Static.getLogger().info("Player (or Entity) [" + args[0] + "] not found in entity.getName.");
+					ExampleStatic.getLogger().info("Player (or Entity) [" + args[0] + "] not found in entity.getName.");
 				} else if (e instanceof Player) {
 					Player p = (Player) e;
 					//sending list name because Static.getNamedPlayer() uses list name
@@ -439,11 +439,11 @@ public class RemoteSession {
 			// entity.getTile
 			} else if (c.equals("entity.getTile")) {
 				//get entity based on id
-				Entity entity = Static.getEntity(Integer.parseInt(args[0]));
+				Entity entity = ExampleStatic.getEntity(Integer.parseInt(args[0]));
 				if (entity != null) {
 					send(blockLocationToRelative(entity.getLocation()));
 				} else {
-					Static.getLogger().info("Entity [" + args[0] + "] not found.");
+					ExampleStatic.getLogger().info("Entity [" + args[0] + "] not found.");
 					send("Fail");
 				}
 				
@@ -451,25 +451,25 @@ public class RemoteSession {
 			} else if (c.equals("entity.setTile")) {
 				String x = args[1], y = args[2], z = args[3];
 				//get entity based on id
-				Entity entity = Static.getEntity(Integer.parseInt(args[0]));
+				Entity entity = ExampleStatic.getEntity(Integer.parseInt(args[0]));
 				if (entity != null) {
 					//get entity's current location, so when they are moved we will use the same pitch and yaw (rotation)
 					Location loc = entity.getLocation();
 					entity.teleport(parseRelativeBlockLocation(x, y, z, loc.getPitch(), loc.getYaw()));
 				} else {
-					Static.getLogger().info("Entity [" + args[0] + "] not found.");
+					ExampleStatic.getLogger().info("Entity [" + args[0] + "] not found.");
 					send("Fail");
 				}
 
 			// entity.getPos
 			} else if (c.equals("entity.getPos")) {
 				//get entity based on id
-				Entity entity = Static.getEntity(Integer.parseInt(args[0]));
+				Entity entity = ExampleStatic.getEntity(Integer.parseInt(args[0]));
 				//Player entity = Static.getEntity(Integer.parseInt(args[0]));
 				if (entity != null) {
 					send(locationToRelative(entity.getLocation()));
 				} else {
-					Static.getLogger().info("Entity [" + args[0] + "] not found.");
+					ExampleStatic.getLogger().info("Entity [" + args[0] + "] not found.");
 					send("Fail");
 				}
 			
@@ -477,19 +477,19 @@ public class RemoteSession {
 			} else if (c.equals("entity.setPos")) {
 				String x = args[1], y = args[2], z = args[3];
 				//get entity based on id
-				Entity entity = Static.getEntity(Integer.parseInt(args[0]));
+				Entity entity = ExampleStatic.getEntity(Integer.parseInt(args[0]));
 				if (entity != null) {
 					//get entity's current location, so when they are moved we will use the same pitch and yaw (rotation)
 					Location loc = entity.getLocation();
 					entity.teleport(parseRelativeLocation(x, y, z, loc.getPitch(), loc.getYaw()));
 				} else {
-					Static.getLogger().info("Entity [" + args[0] + "] not found.");
+					ExampleStatic.getLogger().info("Entity [" + args[0] + "] not found.");
 					send("Fail");
 				}
 
 			// entity.setDirection
 			} else if (c.equals("entity.setDirection")) {
-				Entity entity = Static.getEntity(Integer.parseInt(args[0]));
+				Entity entity = ExampleStatic.getEntity(Integer.parseInt(args[0]));
 				if (entity != null) {
 					Double x = Double.parseDouble(args[1]);
 					Double y = Double.parseDouble(args[2]); 
@@ -498,63 +498,63 @@ public class RemoteSession {
 					loc.setDirection(new Vector(x, y, z));
 					entity.teleport(loc);
 				} else {
-					Static.getLogger().info("Entity [" + args[0] + "] not found.");
+					ExampleStatic.getLogger().info("Entity [" + args[0] + "] not found.");
 				}
 				
 			// entity.getDirection
 			} else if (c.equals("entity.getDirection")) {
 				//get entity based on id
-				Entity entity = Static.getEntity(Integer.parseInt(args[0]));
+				Entity entity = ExampleStatic.getEntity(Integer.parseInt(args[0]));
 				if (entity != null) {
 					send(entity.getLocation().getDirection().toString());
 				} else {
-					Static.getLogger().info("Entity [" + args[0] + "] not found.");
+					ExampleStatic.getLogger().info("Entity [" + args[0] + "] not found.");
 					send("Fail");
 				}
 
 			// entity.setRotation
 			} else if (c.equals("entity.setRotation")) {
-				Entity entity = Static.getEntity(Integer.parseInt(args[0]));
+				Entity entity = ExampleStatic.getEntity(Integer.parseInt(args[0]));
 				if (entity != null) {
 					Float yaw = Float.parseFloat(args[1]);
 					Location loc = entity.getLocation();
 					loc.setYaw(yaw);
 					entity.teleport(loc);
 				} else {
-					Static.getLogger().info("Entity [" + args[0] + "] not found.");
+					ExampleStatic.getLogger().info("Entity [" + args[0] + "] not found.");
 				}
 
 			// entity.getRotation
 			} else if (c.equals("entity.getRotation")) {
 				//get entity based on id
-				Entity entity = Static.getEntity(Integer.parseInt(args[0]));
+				Entity entity = ExampleStatic.getEntity(Integer.parseInt(args[0]));
 				if (entity != null) {
 					send(entity.getLocation().getYaw());
 				} else {
-					Static.getLogger().info("Entity [" + args[0] + "] not found.");
+					ExampleStatic.getLogger().info("Entity [" + args[0] + "] not found.");
 					send("Fail");
 				}
 			
 			// entity.setPitch
 			} else if (c.equals("entity.setPitch")) {
-				Entity entity = Static.getEntity(Integer.parseInt(args[0]));
+				Entity entity = ExampleStatic.getEntity(Integer.parseInt(args[0]));
 				if (entity != null) {
 					Float pitch = Float.parseFloat(args[1]);
 					Location loc = entity.getLocation();
 					loc.setPitch(pitch);
 					entity.teleport(loc);
 				} else {
-					Static.getLogger().info("Entity [" + args[0] + "] not found.");
+					ExampleStatic.getLogger().info("Entity [" + args[0] + "] not found.");
 				}
 
 			// entity.getPitch
 			} else if (c.equals("entity.getPitch")) {
 				//get entity based on id
-				Entity entity = Static.getEntity(Integer.parseInt(args[0]));
+				Entity entity = ExampleStatic.getEntity(Integer.parseInt(args[0]));
 				if (entity != null) {
 					send(entity.getLocation().getPitch());
 				} else {
-					Static.getLogger().info("Entity [" + args[0] + "] not found.");
+					ExampleStatic.getLogger().info("Entity [" + args[0] + "] not found.");
 					send("Fail");
 				}
 				
@@ -616,12 +616,12 @@ public class RemoteSession {
 
 			// not a command which is supported
 			} else {
-				Static.getLogger().warning(c + " is not supported.");
+				ExampleStatic.getLogger().warning(c + " is not supported.");
 				send("Fail");
 			}
 		} catch (Exception e) {
 			
-			Static.getLogger().warning("Error occured handling command");
+			ExampleStatic.getLogger().warning("Error occured handling command");
 			e.printStackTrace();
 			send("Fail");
 		
@@ -695,7 +695,7 @@ public class RemoteSession {
 		Player player = attachedPlayer;
 		// if the player hasnt already been retreived for this session, go and get it.
 		if (player == null) {
-			player = Static.getHostPlayer();
+			player = ExampleStatic.getHostPlayer();
 			attachedPlayer = player;
 		}
 		return player;
@@ -703,13 +703,13 @@ public class RemoteSession {
 	
 	public Player getCurrentPlayer(String name) {
 		// if a named player is returned use that
-		Player player = Static.getNamedPlayer(name);
+		Player player = ExampleStatic.getNamedPlayer(name);
 		// otherwise if there is an attached player for this session use that
 		if (player == null) {
 			player = attachedPlayer;
 			// otherwise go and get the host player and make that the attached player
 			if (player == null) {
-				player = Static.getHostPlayer();
+				player = ExampleStatic.getHostPlayer();
 				attachedPlayer = player;
 			}
 		}
@@ -790,7 +790,7 @@ public class RemoteSession {
 	}
 	
 	private String getEntities(World world, int entityId, int distance, int entityType) {
-		Entity playerEntity = Static.getEntity(entityId);
+		Entity playerEntity = ExampleStatic.getEntity(entityId);
 		StringBuilder bdr = new StringBuilder();
 		for (Entity e : world.getEntities()) {
 			if (((entityType == -1 && e.getType().getTypeId() >= 0) || e.getType().getTypeId() == entityType) && 
@@ -821,7 +821,7 @@ public class RemoteSession {
 
 	private int removeEntities(World world, int entityId, int distance, int entityType) {
 		int removedEntitiesCount = 0;
-		Entity playerEntityId = Static.getEntity(entityId);
+		Entity playerEntityId = ExampleStatic.getEntity(entityId);
 		for (Entity e : world.getEntities()) {
 			if ((entityType == -1 || e.getType().getTypeId() == entityType) && getDistance(playerEntityId, e) <= distance)
 			{
@@ -965,7 +965,7 @@ public class RemoteSession {
 			outThread.join(2000);
 		}
 		catch (InterruptedException e) {
-			Static.getLogger().warning("Failed to stop in/out thread");
+			ExampleStatic.getLogger().warning("Failed to stop in/out thread");
 			e.printStackTrace();
 		}
 
@@ -974,7 +974,7 @@ public class RemoteSession {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		Static.getLogger().info("Closed connection to" + socket.getRemoteSocketAddress() + ".");
+		ExampleStatic.getLogger().info("Closed connection to" + socket.getRemoteSocketAddress() + ".");
 	}
 
 	public void kick(String reason) {
@@ -989,7 +989,7 @@ public class RemoteSession {
 	/** socket listening thread */
 	private class InputThread implements Runnable {
 		public void run() {
-			Static.getLogger().info("Starting input thread");
+			ExampleStatic.getLogger().info("Starting input thread");
 			while (running) {
 				try {
 					String newLine = in.readLine();
@@ -1004,7 +1004,7 @@ public class RemoteSession {
 					// if its running raise an error
 					if (running) {
 						if (e.getMessage().equals("Connection reset")) {
-							Static.getLogger().info("Connection reset");
+							ExampleStatic.getLogger().info("Connection reset");
 						} else {
 							e.printStackTrace();
 						}
@@ -1016,7 +1016,7 @@ public class RemoteSession {
 			try {
 				in.close();
 			} catch (Exception e) {
-				Static.getLogger().warning("Failed to close in buffer");
+				ExampleStatic.getLogger().warning("Failed to close in buffer");
 				e.printStackTrace();
 			}
 		}
@@ -1024,7 +1024,7 @@ public class RemoteSession {
 
 	private class OutputThread implements Runnable {
 		public void run() {
-			Static.getLogger().info("Starting output thread!");
+			ExampleStatic.getLogger().info("Starting output thread!");
 			while (running) {
 				try {
 					String line;
@@ -1047,7 +1047,7 @@ public class RemoteSession {
 			try {
 				out.close();
 			} catch (Exception e) {
-				Static.getLogger().warning("Failed to close out buffer");
+				ExampleStatic.getLogger().warning("Failed to close out buffer");
 				e.printStackTrace();
 			}
 		}

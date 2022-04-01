@@ -1,33 +1,43 @@
-package ua.rozipp.abstractplugin.config;
+package ua.rozipp.abstractplugin;
 
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.plugin.java.JavaPlugin;
-import ua.rozipp.example.main.ExamplePlugin;
+import ua.rozipp.abstractplugin.exception.InvalidConfiguration;
 
 import java.io.*;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.Level;
 
-public class SettingMaster {
+public class ASettingMaster {
 
+	private static String FOLDERNAME = "data/";
+	private APlugin plugin;
 	private final FileConfiguration mainConfig;
 	private Map<String, FileConfiguration> configsFiles = new HashMap<>();
 
-	public SettingMaster(JavaPlugin thisPlugin){
+	public ASettingMaster(APlugin plugin){
 		//save a copy of the default config.yml if one is not there
-		thisPlugin.saveDefaultConfig();
-		mainConfig = thisPlugin.getConfig();
+		this.plugin = plugin;
+		plugin.saveDefaultConfig();
+		mainConfig = plugin.getConfig();
+		try {
+			plugin.getLogger().setLevel(Level.parse(getString("", "loglevel")));
+		} catch (InvalidConfiguration e1){
+			plugin.getLogger().warning(e1.getMessage());
+		}
+
+		try {
+			getString("", "loglevel");
+		} catch (InvalidConfiguration e1){
+			plugin.getLogger().warning(e1.getMessage());
+		}
+
 	}
 
-	public void init() throws IOException, InvalidConfigurationException {
-		loadConfig("civ");
-		loadConfig("town");
-	}
-
-	private void loadConfig(String name) throws IOException, InvalidConfigurationException {
-		configsFiles.put(name, loadFileConfig("data/" + name + ".yml", false));
+	public void loadConfig(String name) throws IOException, InvalidConfigurationException {
+		configsFiles.put(name, loadFileConfig(FOLDERNAME + name + ".yml", false));
 	}
 
 	private FileConfiguration getFileConfig(String fileName){
@@ -36,13 +46,13 @@ public class SettingMaster {
 	}
 
 	public FileConfiguration loadFileConfig(String filepath, boolean replace) throws IOException, InvalidConfigurationException {
-		File file = new File(ExamplePlugin.getPlugin().getPlugin().getDataFolder().getPath() + "/" + filepath);
+		File file = new File(plugin.getPlugin().getDataFolder().getPath() + "/" + filepath);
 		if (!file.exists()) {
-			ExamplePlugin.getPlugin().getLogger().warning("Configuration file: " + filepath + " was missing. Streaming to disk from Jar.");
-			ExamplePlugin.getPlugin().getPlugin().saveResource(filepath, replace);
+			plugin.getLogger().warning("Configuration file: " + filepath + " was missing. Streaming to disk from Jar.");
+			plugin.saveResource(filepath, replace);
 		}
 
-		ExamplePlugin.getPlugin().getLogger().info("Loading Configuration file: " + filepath);
+		plugin.getLogger().info("Loading Configuration file: " + filepath);
 		// read the config.yml into memory
 		YamlConfiguration cfg = new YamlConfiguration();
 		cfg.load(file);
@@ -51,30 +61,30 @@ public class SettingMaster {
 
 	public String getString(String fileName, String path) throws InvalidConfiguration {
 		FileConfiguration cfg = getFileConfig(fileName);
-		if (!cfg.contains(path)) throw new InvalidConfiguration("Could not get configuration string \"" + path + "\" in file \"" + fileName + ".yml\"");
-		ExamplePlugin.getPlugin().getLogger().config(path + ": " + cfg.getString(path));
+		if (!cfg.contains(path)) throw new InvalidConfiguration(FOLDERNAME + fileName + ".yml", path);
+		plugin.getLogger().config(path + ": " + cfg.getString(path));
 		return cfg.getString(path);
 	}
 
 	public int getInteger(String fileName, String path) throws InvalidConfiguration {
 		FileConfiguration cfg = getFileConfig(fileName);
-		if (!cfg.contains(path)) throw new InvalidConfiguration("Could not get configuration integer \"" + path + "\" in file \"" + fileName + ".yml\"");
-		ExamplePlugin.getPlugin().getLogger().config(path + ": " + cfg.getInt(path));
+		if (!cfg.contains(path)) throw new InvalidConfiguration(FOLDERNAME + fileName + ".yml", path);
+		plugin.getLogger().config(path + ": " + cfg.getInt(path));
 		return cfg.getInt(path);
 	}
 
 	public double getDouble(String fileName, String path) throws InvalidConfiguration {
 		FileConfiguration cfg = getFileConfig(fileName);
-		if (!cfg.contains(path)) throw new InvalidConfiguration("Could not get configuration double \"" + path + "\" in file \"" + fileName + ".yml\"");
-		ExamplePlugin.getPlugin().getLogger().config(path + ": " + cfg.getDouble(path));
+		if (!cfg.contains(path)) throw new InvalidConfiguration(FOLDERNAME + fileName + ".yml", path);
+		plugin.getLogger().config(path + ": " + cfg.getDouble(path));
 		return cfg.getDouble(path);
 	}
 
 	public boolean getBoolean(String fileName, String path) throws InvalidConfiguration {
 		FileConfiguration cfg = getFileConfig(fileName);
-		ExamplePlugin.getPlugin().getLogger().info(cfg.getCurrentPath());
-		if (!cfg.contains(path)) throw new InvalidConfiguration("Could not get configuration boolean \"" + path + "\" in file \"" + fileName + ".yml\"");
-		ExamplePlugin.getPlugin().getLogger().config(path + ": " + cfg.getBoolean(path));
+		plugin.getLogger().info(cfg.getCurrentPath());
+		if (!cfg.contains(path)) throw new InvalidConfiguration(FOLDERNAME + fileName + ".yml", path);
+		plugin.getLogger().config(path + ": " + cfg.getBoolean(path));
 		return cfg.getBoolean(path);
 	}
 

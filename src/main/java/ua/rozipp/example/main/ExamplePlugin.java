@@ -1,18 +1,17 @@
 package ua.rozipp.example.main;
 
-import lombok.Getter;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.InvalidConfigurationException;
 import ua.rozipp.abstractplugin.command.CommanderRegistration;
 import ua.rozipp.abstractplugin.command.CustomCommand;
-import ua.rozipp.abstractplugin.main.AColor;
-import ua.rozipp.abstractplugin.main.AException;
-import ua.rozipp.abstractplugin.main.APlugin;
+import ua.rozipp.abstractplugin.command.CustomExecutor;
+import ua.rozipp.abstractplugin.AColor;
+import ua.rozipp.abstractplugin.exception.AException;
+import ua.rozipp.abstractplugin.APlugin;
 import ua.rozipp.example.command.TestCommand;
 import ua.rozipp.example.listener.DisableXPListener;
-import ua.rozipp.example.listener.MainListener;
-import ua.rozipp.example.remotesession.RemoteSession;
+import ua.rozipp.example.listener.ExampleListener;
 import ua.rozipp.example.remotesession.ServerListenerThread;
 import ua.rozipp.example.remotesession.TickHandler;
 
@@ -21,16 +20,18 @@ import java.util.ArrayList;
 
 public class ExamplePlugin extends APlugin {
 
-	@Getter
-	private ExampleData data;
 	public static ServerListenerThread serverThread;
 
 	@Override
 	public void onEnable() {
 		getLogger().info("----------------------- ExamplePlugin Started -----------------------");
-		init();
+//		this.saveResource("localization/en_us.yml", true);
+//		this.saveResource("localization/ru_ru.yml", true);
+		super.onEnable();
+
 		try {
-			getSetting().init();
+			getSetting().loadConfig("civ");
+			getSetting().loadConfig("town");
 		} catch (IOException | InvalidConfigurationException e) {
 			getLogger().severe(e.getMessage());
 			e.printStackTrace();
@@ -44,7 +45,6 @@ public class ExamplePlugin extends APlugin {
 //			getLogger().error(e.getMessage());
 //			return;
 //		}
-		data = new ExampleData();
 
 		//register commands
 		initCommands();
@@ -74,22 +74,22 @@ public class ExamplePlugin extends APlugin {
 	}
 
 	public void registerAllListeners() {
-		registerListener(new MainListener());
+		this.getListenerMaster().registerListener(new ExampleListener());
 
 		if (getSetting().getBooleanOrDefault("civ", "global.use_exp_as_currency", false))
-			registerListener(new DisableXPListener());
+			this.getListenerMaster().registerListener(new DisableXPListener());
 
-		getLogger().config("Registred " + getCountListener() + " listeners");
+		getLogger().config("Registred " + this.getListenerMaster().getCountListener() + " listeners");
 	}
 
 	public void initCommands() {
 		// Init commands
 		CommanderRegistration.register(new TestCommand("test"));
-		CommanderRegistration.register(new CustomCommand("kill").withExecutor(new CustomCommand.CustomExecutor() {
+		CommanderRegistration.register(new CustomCommand("kill").withExecutor(new CustomExecutor() {
 			@Override
 			public void run(CommandSender sender, Command cmd, String label, String[] args) throws AException {
 				getCommander().getPlayer(sender).setHealth(0);
-				getMessenger().sendMessageString(sender, AColor.Yellow + AColor.BOLD + getLocalize().getString(sender, "cmd_kill_Mesage"));
+				getMessenger().sendMessageString(sender, AColor.Yellow + AColor.BOLD + getLocalizer().getString(sender, "cmd_kill_Mesage"));
 			}
 		}));
 

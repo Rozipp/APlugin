@@ -16,7 +16,7 @@
  * is strictly forbidden unless prior written permission is obtained
  * from AVRGAMING LLC.
  */
-package ua.rozipp.abstractplugin.main;
+package ua.rozipp.abstractplugin;
 
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
@@ -29,11 +29,11 @@ public class AMessenger {
 	/* Stores the player name and the hash code of the last message sent to prevent error spamming the player. */
 	private HashMap<String, Integer> lastMessageHashCode = new HashMap<String, Integer>();
 	private final APlugin plugin;
-	private final ALocalize localize;
+	private final ALocalizerMaster localize;
 
 	public AMessenger(APlugin plugin) {
 		this.plugin = plugin;
-		this.localize = plugin.getLocalize();
+		this.localize = plugin.getLocalizer();
 	}
 
 	public void sendErrorNoRepeat(Object sender, String line) {

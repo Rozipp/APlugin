@@ -9,9 +9,8 @@ import org.bukkit.event.entity.ExpBottleEvent;
 import org.bukkit.event.entity.ItemSpawnEvent;
 import org.bukkit.event.player.PlayerExpChangeEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
-import ua.rozipp.abstractplugin.main.AMessenger;
 import ua.rozipp.example.main.ExamplePlugin;
-import ua.rozipp.example.main.Static;
+import ua.rozipp.example.main.ExampleStatic;
 
 public class DisableXPListener implements Listener {
 
@@ -24,7 +23,7 @@ public class DisableXPListener implements Listener {
 	@EventHandler(priority = EventPriority.LOW)
 	public void onEnchantItemEvent(EnchantItemEvent event) {
 		ExamplePlugin.getPlugin().getLogger().info("onEnchantItemEvent");
-		Static.getMessenger().sendErrorLocalized(event.getEnchanter(), "customItem_NoEnchanting");
+		ExampleStatic.getMessenger().sendErrorLocalized(event.getEnchanter(), "customItem_NoEnchanting");
 		event.setCancelled(true);
 	}
 	

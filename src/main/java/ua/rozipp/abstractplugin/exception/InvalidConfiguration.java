@@ -16,13 +16,20 @@
  * is strictly forbidden unless prior written permission is obtained
  * from AVRGAMING LLC.
  */
-package ua.rozipp.abstractplugin.config;
+package ua.rozipp.abstractplugin.exception;
+
+import ua.rozipp.abstractplugin.APlugin;
 
 public class InvalidConfiguration extends Exception {
 
 	private static final long serialVersionUID = 6603010451357647626L;
 	
-	public InvalidConfiguration(String message) {
-		super(message);
+	public InvalidConfiguration(String fileName, String path) {
+		super("Failed to get configuration string \"" + path + "\" from file \"" + fileName + "\"");
+	}
+
+	@Override
+	public String getLocalizedMessage() {
+		return APlugin.getPlugin().getLocalizer().getString("", "failed_to_get_configuration_string");
 	}
 }

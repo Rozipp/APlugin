@@ -1,7 +1,7 @@
 package ua.rozipp.abstractplugin.command.taber;
 
 import org.bukkit.command.CommandSender;
-import ua.rozipp.abstractplugin.main.AException;
+import ua.rozipp.abstractplugin.exception.AException;
 
 import java.util.List;
 

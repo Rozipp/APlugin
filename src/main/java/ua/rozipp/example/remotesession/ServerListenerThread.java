@@ -1,9 +1,9 @@
 package ua.rozipp.example.remotesession;
 
-import ua.rozipp.abstractplugin.main.AException;
-import ua.rozipp.abstractplugin.main.APlugin;
+import ua.rozipp.abstractplugin.exception.AException;
+import ua.rozipp.abstractplugin.APlugin;
 import ua.rozipp.example.main.ExamplePlugin;
-import ua.rozipp.example.main.Static;
+import ua.rozipp.example.main.ExampleStatic;
 
 import java.io.*;
 import java.net.*;
@@ -47,7 +47,7 @@ public class ServerListenerThread implements Runnable {
 			try {
 				Socket newConnection = serverSocket.accept();
 				if (!running) return;
-				Static.handleConnection(new RemoteSession(newConnection));
+				ExampleStatic.handleConnection(new RemoteSession(newConnection));
 			} catch (Exception e) {
 				// if the server thread is still running raise an error
 				if (running) {

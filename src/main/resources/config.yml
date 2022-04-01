@@ -13,11 +13,8 @@ loglevel: FINEST
 server_url: 'http://www.civilizationcraft.net/'
 server_url_description: 'CivCraft Homepage'
 
-# ============================== Language Configuration ====================================
-# If you wish to localize CivilizationCraft, run the server once to generate a default_lang.yml file
-# Then rename the file. For example "ru_lang.yml" and then translate the strings to Russian.
-# Update this config line below to match the name of your translated file.
-localization_file: "en_US"
+# Language Configuration
+server_language: "en_us"
 
 
 

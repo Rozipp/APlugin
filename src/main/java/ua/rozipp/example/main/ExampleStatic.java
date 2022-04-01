@@ -7,24 +7,27 @@ import org.bukkit.World;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import ua.rozipp.abstractplugin.command.ACommander;
-import ua.rozipp.abstractplugin.config.SettingMaster;
-import ua.rozipp.abstractplugin.main.ALocalize;
-import ua.rozipp.abstractplugin.main.AMessenger;
-import ua.rozipp.abstractplugin.main.APlugin;
-import ua.rozipp.abstractplugin.threading.ATaskMaster;
+import ua.rozipp.abstractplugin.ASettingMaster;
+import ua.rozipp.abstractplugin.ALocalizerMaster;
+import ua.rozipp.abstractplugin.AMessenger;
+import ua.rozipp.abstractplugin.APlugin;
+import ua.rozipp.abstractplugin.ATaskMaster;
 import ua.rozipp.example.remotesession.RemoteSession;
 import ua.rozipp.example.remotesession.TickHandler;
 
 import java.util.Set;
 import java.util.logging.Logger;
 
+/**
+* Клас для статического обращения к объектам плагина
+*/
 @Getter
-public class Static {
+public class ExampleStatic {
 
 	private static APlugin plugin;
 	private static ATaskMaster taskMaster;
-	private static SettingMaster setting;
-	private static ALocalize localize;
+	private static ASettingMaster setting;
+	private static ALocalizerMaster localizer;
 	@Getter
 	private static AMessenger messenger;
 	private static ACommander commander;
@@ -37,14 +40,13 @@ public class Static {
 		return plugin.getServer();
 	}
 
-
-	public void init(APlugin plugin) {
-		this.plugin = plugin;
-		this.taskMaster = plugin.getTaskMaster();
-		this.setting = plugin.getSetting();
-		this.localize = plugin.getLocalize();
-		this.messenger = plugin.getMessenger();
-		this.commander = plugin.getCommander();
+	public static void init(APlugin plugin) {
+		ExampleStatic.plugin = plugin;
+		ExampleStatic.taskMaster = plugin.getTaskMaster();
+		ExampleStatic.setting = plugin.getSetting();
+		ExampleStatic.localizer = plugin.getLocalizer();
+		ExampleStatic.messenger = plugin.getMessenger();
+		ExampleStatic.commander = plugin.getCommander();
 	}
 
 	/**
