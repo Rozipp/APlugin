@@ -1,19 +1,20 @@
 package ua.rozipp.abstractplugin;
 
-import lombok.Getter;
 import org.bukkit.Server;
 import org.bukkit.World;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitTask;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
 
 /**
  * Мастер огранизации синхронних и асинхронних задач и таймеров
  */
 public class ATaskMaster {
 
-	@Getter
 	private JavaPlugin plugin = null;
 	private Server server = null;
 	/** Список именованних асинхронных потоков */
@@ -238,5 +239,9 @@ public class ATaskMaster {
 
 	public Set<String> getTimersList() {
 		return timers.keySet();
+	}
+
+	public JavaPlugin getPlugin() {
+		return this.plugin;
 	}
 }

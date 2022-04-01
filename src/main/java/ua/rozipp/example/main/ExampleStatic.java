@@ -1,17 +1,12 @@
 package ua.rozipp.example.main;
 
-import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.Server;
 import org.bukkit.World;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
+import ua.rozipp.abstractplugin.*;
 import ua.rozipp.abstractplugin.command.ACommander;
-import ua.rozipp.abstractplugin.ASettingMaster;
-import ua.rozipp.abstractplugin.ALocalizerMaster;
-import ua.rozipp.abstractplugin.AMessenger;
-import ua.rozipp.abstractplugin.APlugin;
-import ua.rozipp.abstractplugin.ATaskMaster;
 import ua.rozipp.example.remotesession.RemoteSession;
 import ua.rozipp.example.remotesession.TickHandler;
 
@@ -21,14 +16,12 @@ import java.util.logging.Logger;
 /**
 * Клас для статического обращения к объектам плагина
 */
-@Getter
 public class ExampleStatic {
 
 	private static APlugin plugin;
 	private static ATaskMaster taskMaster;
 	private static ASettingMaster setting;
 	private static ALocalizerMaster localizer;
-	@Getter
 	private static AMessenger messenger;
 	private static ACommander commander;
 
@@ -104,5 +97,9 @@ public class ExampleStatic {
 			}
 		}
 		return null;
+	}
+
+	public static AMessenger getMessenger() {
+		return ExampleStatic.messenger;
 	}
 }

@@ -1,16 +1,14 @@
 package ua.rozipp.abstractplugin.command;
 
-import lombok.Getter;
-import lombok.Setter;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
-import ua.rozipp.abstractplugin.command.taber.AbstractTaber;
-import ua.rozipp.abstractplugin.exception.AException;
-import ua.rozipp.abstractplugin.exception.InvalidPermissionException;
 import ua.rozipp.abstractplugin.ALocalizerMaster;
 import ua.rozipp.abstractplugin.AMessenger;
 import ua.rozipp.abstractplugin.APlugin;
+import ua.rozipp.abstractplugin.command.taber.AbstractTaber;
+import ua.rozipp.abstractplugin.exception.AException;
+import ua.rozipp.abstractplugin.exception.InvalidPermissionException;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -23,7 +21,6 @@ import java.util.List;
  *
  * @author rozipp
  */
-@Getter
 public class CustomCommand {
 
 	private final APlugin plugin;
@@ -31,21 +28,13 @@ public class CustomCommand {
 	private final AMessenger messenger;
 	private final String commandString;
 
-	@Setter
 	private String description;
-	@Setter
 	private List<String> aliases = null;
-	@Setter
 	private String usage = null;
-	@Setter
 	private String permission = null;
-	@Setter
 	private String permissionMessage = null;
-	@Setter
 	private List<AbstractValidator> validators = new ArrayList<>();
-	@Setter
 	private CustomExecutor executor = null;
-	@Setter
 	private List<AbstractTaber> tabs = new ArrayList<>();
 
 	public CustomCommand(String commandString) {
@@ -139,5 +128,79 @@ public class CustomCommand {
 	}
 
 
+	public APlugin getPlugin() {
+		return this.plugin;
+	}
 
+	public ALocalizerMaster getLocalize() {
+		return this.localize;
+	}
+
+	public AMessenger getMessenger() {
+		return this.messenger;
+	}
+
+	public String getCommandString() {
+		return this.commandString;
+	}
+
+	public String getDescription() {
+		return this.description;
+	}
+
+	public List<String> getAliases() {
+		return this.aliases;
+	}
+
+	public String getUsage() {
+		return this.usage;
+	}
+
+	public String getPermission() {
+		return this.permission;
+	}
+
+	public String getPermissionMessage() {
+		return this.permissionMessage;
+	}
+
+	public List<AbstractValidator> getValidators() {
+		return this.validators;
+	}
+
+	public CustomExecutor getExecutor() {
+		return this.executor;
+	}
+
+	public List<AbstractTaber> getTabs() {
+		return this.tabs;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public void setUsage(String usage) {
+		this.usage = usage;
+	}
+
+	public void setPermission(String permission) {
+		this.permission = permission;
+	}
+
+	public void setPermissionMessage(String permissionMessage) {
+		this.permissionMessage = permissionMessage;
+	}
+
+	public void setValidators(List<AbstractValidator> validators) {
+		this.validators = validators;
+	}
+
+	public void setExecutor(CustomExecutor executor) {
+		this.executor = executor;
+	}
+
+	public void setTabs(List<AbstractTaber> tabs) {
+		this.tabs = tabs;
+	}
 }

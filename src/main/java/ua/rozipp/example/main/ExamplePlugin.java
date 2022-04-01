@@ -3,7 +3,6 @@ package ua.rozipp.example.main;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.InvalidConfigurationException;
-import ua.rozipp.abstractplugin.command.CommanderRegistration;
 import ua.rozipp.abstractplugin.command.CustomCommand;
 import ua.rozipp.abstractplugin.command.CustomExecutor;
 import ua.rozipp.abstractplugin.AColor;
@@ -84,8 +83,8 @@ public class ExamplePlugin extends APlugin {
 
 	public void initCommands() {
 		// Init commands
-		CommanderRegistration.register(new TestCommand("test"));
-		CommanderRegistration.register(new CustomCommand("kill").withExecutor(new CustomExecutor() {
+		getCommander().register(new TestCommand("test"));
+		getCommander().register(new CustomCommand("kill").withExecutor(new CustomExecutor() {
 			@Override
 			public void run(CommandSender sender, Command cmd, String label, String[] args) throws AException {
 				getCommander().getPlayer(sender).setHealth(0);
@@ -93,7 +92,7 @@ public class ExamplePlugin extends APlugin {
 			}
 		}));
 
-		getLogger().info("registred " + CommanderRegistration.count + " CustomCommands");
+		getLogger().info("registred " + getCommander().getCount() + " CustomCommands");
 	}
 
 }

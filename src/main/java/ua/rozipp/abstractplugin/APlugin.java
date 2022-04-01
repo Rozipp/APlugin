@@ -1,10 +1,8 @@
 package ua.rozipp.abstractplugin;
 
-import lombok.Getter;
 import org.bukkit.plugin.java.JavaPlugin;
 import ua.rozipp.abstractplugin.command.ACommander;
 
-@Getter
 public class APlugin extends JavaPlugin {
 
 	private static APlugin plugin;
@@ -46,4 +44,27 @@ public class APlugin extends JavaPlugin {
 		getListenerMaster().unregisterAllListener();
 	}
 
+	public ATaskMaster getTaskMaster() {
+		return this.taskMaster;
+	}
+
+	public ASettingMaster getSetting() {
+		return this.setting;
+	}
+
+	public ALocalizerMaster getLocalizer() {
+		return this.localizer;
+	}
+
+	public AMessenger getMessenger() {
+		return this.messenger;
+	}
+
+	public ACommander getCommander() {
+		return this.commander;
+	}
+
+	public AListenerMaster getListenerMaster() {
+		return this.listenerMaster;
+	}
 }

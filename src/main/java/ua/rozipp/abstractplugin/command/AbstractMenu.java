@@ -3,6 +3,7 @@ package ua.rozipp.abstractplugin.command;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import ua.rozipp.abstractplugin.AColor;
+import ua.rozipp.abstractplugin.AMessenger;
 import ua.rozipp.abstractplugin.command.taber.AbstractCashedTaber;
 import ua.rozipp.abstractplugin.exception.AException;
 import ua.rozipp.abstractplugin.exception.InvalidPermissionException;
@@ -65,9 +66,9 @@ public abstract class AbstractMenu extends CustomCommand {
 			coment = coment.replace(")", ")" + AColor.LightGray);
 
 			String string = "";
-			string = AColor.addTabToString(string, nomer, 8);
-			string = AColor.addTabToString(string, title, 18);
-			string = AColor.addTabToString(string, coment, 0);
+			string = AMessenger.addTabToString(string, nomer, 8);
+			string = AMessenger.addTabToString(string, title, 18);
+			string = AMessenger.addTabToString(string, coment, 0);
 			getMessenger().sendMessageString(sender, string);
 		}
 	}

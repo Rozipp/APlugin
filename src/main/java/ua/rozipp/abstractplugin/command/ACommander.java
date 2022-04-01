@@ -1,6 +1,8 @@
 package ua.rozipp.abstractplugin.command;
 
-import lombok.Getter;
+import org.bukkit.Bukkit;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandMap;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import ua.rozipp.abstractplugin.ALocalizerMaster;
@@ -8,7 +10,9 @@ import ua.rozipp.abstractplugin.AMessenger;
 import ua.rozipp.abstractplugin.APlugin;
 import ua.rozipp.abstractplugin.exception.AException;
 
+import java.lang.reflect.Field;
 import java.util.HashMap;
+import java.util.List;
 
 /**
  * <p>
@@ -24,12 +28,11 @@ import java.util.HashMap;
 public class ACommander {
 
 	private int count = 0;
-	@Getter
 	private APlugin plugin;
-	@Getter
 	private ALocalizerMaster localize;
-	@Getter
 	private AMessenger messenger;
+
+	protected CommandMap commandMap;
 
 	public ACommander(APlugin plugin) {
 		this.plugin = plugin;
@@ -102,6 +105,79 @@ public class ACommander {
 	public String getNamedString(String[] args, int index, String message) throws AException {
 		if (args.length < (index + 1)) throw new AException(message);
 		return args[index];
+	}
+
+	// ---------------------- register
+
+	public void register(CustomCommand custonCommand) {
+		if (custonCommand.getCommandString() == null || custonCommand.getCommandString().isEmpty())
+			throw new CommandNotPreparedException("Command does not have a name.");
+
+		getCommandMap().register((plugin != null ? plugin.getName() : ""), new ReflectCommand(custonCommand));
+		count++;
+	}
+
+	private CommandMap getCommandMap() {
+		if (commandMap == null) {
+			try {
+				final Field f = Bukkit.getServer().getClass().getDeclaredField("commandMap");
+				f.setAccessible(true);
+				commandMap = (CommandMap) f.get(Bukkit.getServer());
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		return commandMap;
+	}
+
+	public int getCount() {
+		return this.count;
+	}
+
+	public APlugin getPlugin() {
+		return this.plugin;
+	}
+
+	public ALocalizerMaster getLocalize() {
+		return this.localize;
+	}
+
+	public AMessenger getMessenger() {
+		return this.messenger;
+	}
+
+	/** Клас-обертка для регистрации класов CustomCommand как команды плагина
+	 * @author rozipp */
+	private static final class ReflectCommand extends Command {
+
+		private CustomCommand custonCommand;
+
+		protected ReflectCommand(CustomCommand custonCommand) {
+			super(custonCommand.getCommandString());
+			this.custonCommand = custonCommand;
+			if (custonCommand.getAliases() != null) this.setAliases(custonCommand.getAliases());
+			if (custonCommand.getDescription() != null) this.setDescription(custonCommand.getDescription());
+			if (custonCommand.getPermission() != null) this.setPermission(custonCommand.getPermission());
+			if (custonCommand.getPermissionMessage() != null) this.setPermissionMessage(custonCommand.getPermissionMessage());
+			if (custonCommand.getUsage() != null) this.setUsage(custonCommand.getUsage());
+		}
+
+		@Override
+		public boolean execute(CommandSender sender, String commandLabel, String[] args) {
+			return custonCommand.onCommand(sender, this, commandLabel, args);
+		}
+
+		@Override
+		public List<String> tabComplete(CommandSender sender, String commandLabel, String[] args) {
+			return custonCommand.onTab(sender, this, commandLabel, args);
+		}
+	}
+
+	@SuppressWarnings("serial")
+	public static class CommandNotPreparedException extends RuntimeException {
+		public CommandNotPreparedException(String message) {
+			super(message);
+		}
 	}
 
 }
